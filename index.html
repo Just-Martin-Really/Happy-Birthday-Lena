@@ -60,7 +60,8 @@
   h1 {
     font-family: "Fraunces", serif;
     font-weight: 700;
-    font-size: clamp(2.8rem, 9vw, 6rem);
+    font-size: clamp(2.2rem, 9vw, 6rem);
+    hyphens: manual;
     line-height: 1.15;
     margin: 0;
     padding-bottom: 0.08em;
@@ -117,7 +118,10 @@
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .coupon:hover { transform: translateY(-4px) rotate(-0.4deg); box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45); }
+  @media (hover: hover) {
+    .coupon:hover { transform: translateY(-4px) rotate(-0.4deg); box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45); }
+    .redeem:hover { transform: scale(1.04); }
+  }
 
   .banner {
     position: relative;
@@ -159,7 +163,7 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: var(--bg);
+    background: #241430;
   }
 
   .perf::before { left: -35px; }
@@ -201,7 +205,6 @@
     transition: transform 0.15s ease;
   }
 
-  .redeem:hover { transform: scale(1.04); }
   .redeem:disabled { background: #cbbfc6; box-shadow: none; cursor: default; transform: none; }
 
   .coupon.used .banner { filter: grayscale(0.85) brightness(0.8); }
@@ -301,7 +304,7 @@
 
 <footer>Martin ♥</footer>
 
-<dialog id="confirm">
+<dialog id="confirm" aria-labelledby="confirm-title">
   <h2 id="confirm-title"></h2>
   <p>Jeder Gutschein gilt nur einmal. Sicher, dass du ihn jetzt einlösen willst?</p>
   <div class="actions">
@@ -317,7 +320,7 @@
   const COUPONS = [
     {
       id: "shoppen",
-      title: "Shoppen gehen wo du willst",
+      title: "Shoppen gehen, wo du willst",
       tag: "Ich trag die Tüten",
       text: "Du suchst die Läden aus, ich komme mit und trage alles.",
       img: "images/shoppen.jpg",
@@ -331,7 +334,7 @@
     },
     {
       id: "essen",
-      title: "Essen gehen wohin du willst",
+      title: "Essen gehen, wohin du willst",
       tag: "Du suchst aus",
       text: "Egal welches Restaurant, du entscheidest, ich zahle.",
       img: "images/essen.jpg",
@@ -360,14 +363,19 @@
   ];
 
   const params = new URLSearchParams(location.search);
-  if (params.has("reset")) localStorage.removeItem(STORAGE_KEY);
-
   const mode = params.get("mode") || (new Date() < BIRTHDAY_END ? "birthday" : "catalog");
 
-  const redeemed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  // storage can throw when site data is blocked (in-app browsers, strict privacy settings)
+  let redeemed = {};
+  try {
+    if (params.has("reset")) localStorage.removeItem(STORAGE_KEY);
+    redeemed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  } catch {}
 
   function saveRedeemed() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(redeemed));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(redeemed));
+    } catch {}
   }
 
   function renderHeader() {
@@ -381,7 +389,7 @@
       document.title = "Happy Birthday, Lena!";
     } else {
       eyebrow.textContent = "Für Lena";
-      title.textContent = "Geburtstagskatalog";
+      title.textContent = "Geburtstags­katalog";
       lede.textContent = "Deine Geburtstagsgutscheine. Lös sie ein, wann immer dir danach ist.";
       document.title = "Geburtstagskatalog";
     }
@@ -494,9 +502,10 @@
   renderHeader();
   renderCoupons();
 
-  if (mode === "birthday") {
+  if (mode === "birthday" && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     confetti.rain(220);
-    setInterval(() => confetti.rain(60), 4000);
+    const rainTimer = setInterval(() => { if (!document.hidden) confetti.rain(60); }, 4000);
+    setTimeout(() => clearInterval(rainTimer), 20000);
   }
 </script>
 </body>
