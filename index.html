@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Für Lena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1b1026;
+    --bg-2: #2a1638;
+    --ink: #fbf3ea;
+    --muted: #cdb9d6;
+    --gold: #f2c879;
+    --rose: #ff7a8a;
+    --paper: #fff8ef;
+    --paper-ink: #2b1a2f;
+    --stamp: #d6334a;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #4a1f55 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, #5a2340 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "DM Sans", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  #confetti {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  header {
+    text-align: center;
+    padding: 72px 16px 40px;
+  }
+
+  .eyebrow {
+    font-family: "Caveat", cursive;
+    font-size: 1.9rem;
+    color: var(--gold);
+    margin: 0 0 4px;
+  }
+
+  h1 {
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: clamp(2.8rem, 9vw, 6rem);
+    line-height: 1.15;
+    margin: 0;
+    padding-bottom: 0.08em;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--gold), var(--rose), var(--gold));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 6s linear infinite;
+  }
+
+  @keyframes shimmer { to { background-position: 200% center; } }
+
+  .lede {
+    max-width: 34rem;
+    margin: 20px auto 0;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+
+  .section-title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.6rem;
+    text-align: center;
+    color: var(--gold);
+    margin: 8px 0 28px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+  }
+
+  .coupon {
+    position: relative;
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .coupon:hover { transform: translateY(-4px) rotate(-0.4deg); box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45); }
+
+  .banner {
+    position: relative;
+    height: 190px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(27, 16, 38, 0) 35%, rgba(27, 16, 38, 0.75) 100%);
+  }
+
+  .banner .tag {
+    position: absolute;
+    left: 16px;
+    bottom: 12px;
+    z-index: 1;
+    font-family: "Caveat", cursive;
+    font-size: 1.5rem;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* ticket perforation between banner and body */
+  .perf {
+    position: relative;
+    height: 0;
+    border-top: 2px dashed #e3d3c4;
+    margin: 0 22px;
+  }
+
+  .perf::before, .perf::after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .perf::before { left: -35px; }
+  .perf::after { right: -35px; }
+
+  .body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .body h3 {
+    font-family: "Fraunces", serif;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .body p {
+    margin: 0;
+    color: #6b5570;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .redeem {
+    align-self: flex-start;
+    font: inherit;
+    font-weight: 700;
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 22px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(90deg, var(--rose), #e0557d);
+    box-shadow: 0 6px 16px rgba(224, 85, 125, 0.4);
+    transition: transform 0.15s ease;
+  }
+
+  .redeem:hover { transform: scale(1.04); }
+  .redeem:disabled { background: #cbbfc6; box-shadow: none; cursor: default; transform: none; }
+
+  .coupon.used .banner { filter: grayscale(0.85) brightness(0.8); }
+  .coupon.used:hover { transform: none; }
+
+  .stamp {
+    display: none;
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%) rotate(-14deg);
+    border: 4px solid var(--stamp);
+    color: var(--stamp);
+    background: rgba(255, 248, 239, 0.88);
+    border-radius: 10px;
+    padding: 6px 16px;
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .stamp small {
+    display: block;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  .coupon.used .stamp { display: block; animation: thump 0.35s ease-out; }
+
+  @keyframes thump {
+    from { transform: translate(-50%, -50%) rotate(-14deg) scale(2.2); opacity: 0; }
+    to { transform: translate(-50%, -50%) rotate(-14deg) scale(1); opacity: 1; }
+  }
+
+  dialog {
+    border: 0;
+    border-radius: 18px;
+    padding: 28px 26px 22px;
+    max-width: min(380px, calc(100vw - 32px));
+    background: var(--paper);
+    color: var(--paper-ink);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    text-align: center;
+  }
+
+  dialog::backdrop { background: rgba(15, 8, 22, 0.65); backdrop-filter: blur(3px); }
+
+  dialog h2 { font-family: "Fraunces", serif; margin: 0 0 8px; font-size: 1.5rem; }
+  dialog p { margin: 0 0 22px; color: #6b5570; line-height: 1.5; }
+
+  .actions { display: flex; gap: 10px; justify-content: center; }
+
+  .ghost {
+    font: inherit;
+    font-weight: 500;
+    border: 2px solid #e3d3c4;
+    background: transparent;
+    color: var(--paper-ink);
+    border-radius: 999px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-family: "Caveat", cursive;
+    font-size: 1.5rem;
+    padding: 0 16px 48px;
+  }
+
+  @media (max-width: 480px) {
+    header { padding-top: 48px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<header>
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 id="title"></h1>
+  <p class="lede" id="lede"></p>
+</header>
+
+<main>
+  <h2 class="section-title">Deine Gutscheine</h2>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>Martin ♥</footer>
+
+<dialog id="confirm">
+  <h2 id="confirm-title"></h2>
+  <p>Jeder Gutschein gilt nur einmal. Sicher, dass du ihn jetzt einlösen willst?</p>
+  <div class="actions">
+    <button class="ghost" id="confirm-no">Noch nicht</button>
+    <button class="redeem" id="confirm-yes">Einlösen!</button>
+  </div>
+</dialog>
+
+<script>
+  const BIRTHDAY_END = new Date(2026, 9, 31); // local midnight after 30.10.2026
+  const STORAGE_KEY = "lena-coupons-v1";
+
+  const COUPONS = [
+    {
+      id: "shoppen",
+      title: "Shoppen gehen wo du willst",
+      tag: "Ich trag die Tüten",
+      text: "Du suchst die Läden aus, ich komme mit und trage alles.",
+      img: "images/shoppen.jpg",
+    },
+    {
+      id: "therme",
+      title: "Therme Bad Wörishofen",
+      tag: "Ein Tag zum Abschalten",
+      text: "Ein ganzer Tag Wellness, Palmen und warmes Wasser. Eintritt geht auf mich.",
+      img: "images/therme.jpg",
+    },
+    {
+      id: "essen",
+      title: "Essen gehen wohin du willst",
+      tag: "Du suchst aus",
+      text: "Egal welches Restaurant, du entscheidest, ich zahle.",
+      img: "images/essen.jpg",
+    },
+    {
+      id: "weihnachtsmarkt",
+      title: "Weihnachtsmarkt",
+      tag: "Glühwein geht auf mich",
+      text: "Ein Abend auf dem Weihnachtsmarkt deiner Wahl.",
+      img: "images/weihnachtsmarkt.jpg",
+    },
+    {
+      id: "tagesausflug",
+      title: "Tagesausflug",
+      tag: "Du suchst das Ziel aus",
+      text: "Ein Tag raus, wohin du willst.",
+      img: "images/tagesausflug.jpg",
+    },
+    {
+      id: "jasager",
+      title: "Ein Tag Ja-Sager",
+      tag: "24 Stunden nur Ja",
+      text: "Einen Tag lang sage ich zu allem Ja.",
+      img: "images/jasager.jpg",
+    },
+  ];
+
+  const params = new URLSearchParams(location.search);
+  if (params.has("reset")) localStorage.removeItem(STORAGE_KEY);
+
+  const mode = params.get("mode") || (new Date() < BIRTHDAY_END ? "birthday" : "catalog");
+
+  const redeemed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+  function saveRedeemed() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(redeemed));
+  }
+
+  function renderHeader() {
+    const eyebrow = document.getElementById("eyebrow");
+    const title = document.getElementById("title");
+    const lede = document.getElementById("lede");
+    if (mode === "birthday") {
+      eyebrow.textContent = "Liebe Lena,";
+      title.textContent = "Happy Birthday!";
+      lede.textContent = "Alles Gute zu deinem Geburtstag! Statt Kram, der rumsteht, gibt's Zeit mit mir. Such dir aus, was du willst, und lös es ein, wann du willst.";
+      document.title = "Happy Birthday, Lena!";
+    } else {
+      eyebrow.textContent = "Für Lena";
+      title.textContent = "Geburtstagskatalog";
+      lede.textContent = "Deine Geburtstagsgutscheine. Lös sie ein, wann immer dir danach ist.";
+      document.title = "Geburtstagskatalog";
+    }
+  }
+
+  function formatDate(iso) {
+    return new Date(iso).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  function renderCoupons() {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    for (const c of COUPONS) {
+      const used = redeemed[c.id];
+      const el = document.createElement("article");
+      el.className = "coupon" + (used ? " used" : "");
+      el.innerHTML = `
+        <div class="banner" style="background-image:url('${c.img}')"><span class="tag">${c.tag}</span></div>
+        <div class="stamp">EINGELÖST${used ? `<small>am ${formatDate(used)}</small>` : ""}</div>
+        <div class="perf"></div>
+        <div class="body">
+          <h3>${c.title}</h3>
+          <p>${c.text}</p>
+          <button class="redeem" ${used ? "disabled" : ""}>${used ? "Schon eingelöst" : "Einlösen"}</button>
+        </div>`;
+      el.querySelector(".redeem").addEventListener("click", () => askRedeem(c));
+      grid.appendChild(el);
+    }
+  }
+
+  const dialog = document.getElementById("confirm");
+  let pending = null;
+
+  function askRedeem(coupon) {
+    pending = coupon;
+    document.getElementById("confirm-title").textContent = coupon.title;
+    dialog.showModal();
+  }
+
+  document.getElementById("confirm-no").addEventListener("click", () => dialog.close());
+  document.getElementById("confirm-yes").addEventListener("click", () => {
+    redeemed[pending.id] = new Date().toISOString();
+    saveRedeemed();
+    dialog.close();
+    renderCoupons();
+    confetti.burst(160);
+  });
+
+  const confetti = (() => {
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    const colors = ["#f2c879", "#ff7a8a", "#ffffff", "#8fd3ff", "#c39bff", "#7be0b0"];
+    let pieces = [];
+    let running = false;
+
+    function resize() {
+      canvas.width = innerWidth * devicePixelRatio;
+      canvas.height = innerHeight * devicePixelRatio;
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    }
+    addEventListener("resize", resize);
+    resize();
+
+    function spawn(fromTop) {
+      return {
+        x: fromTop ? Math.random() * innerWidth : innerWidth / 2 + (Math.random() - 0.5) * 120,
+        y: fromTop ? -20 - Math.random() * innerHeight * 0.5 : innerHeight * 0.55,
+        vx: fromTop ? (Math.random() - 0.5) * 2 : (Math.random() - 0.5) * 16,
+        vy: fromTop ? 2 + Math.random() * 3 : -10 - Math.random() * 10,
+        w: 6 + Math.random() * 8,
+        h: 8 + Math.random() * 10,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        wobble: Math.random() * Math.PI * 2,
+      };
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      for (const p of pieces) {
+        p.vy = Math.min(p.vy + 0.25, 5);
+        p.vx *= 0.99;
+        p.wobble += 0.08;
+        p.x += p.vx + Math.sin(p.wobble) * 0.8;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, (-p.h / 2) * Math.cos(p.wobble), p.w, p.h * Math.cos(p.wobble));
+        ctx.restore();
+      }
+      pieces = pieces.filter(p => p.y < innerHeight + 40);
+      if (pieces.length) requestAnimationFrame(tick);
+      else running = false;
+    }
+
+    function start() {
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    }
+
+    return {
+      rain(n) { for (let i = 0; i < n; i++) pieces.push(spawn(true)); start(); },
+      burst(n) { for (let i = 0; i < n; i++) pieces.push(spawn(false)); start(); },
+    };
+  })();
+
+  renderHeader();
+  renderCoupons();
+
+  if (mode === "birthday") {
+    confetti.rain(220);
+    setInterval(() => confetti.rain(60), 4000);
+  }
+</script>
+</body>
+</html>
